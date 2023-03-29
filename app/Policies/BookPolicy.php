@@ -18,7 +18,9 @@ class BookPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        // Controller Method index() 對應 Policy Method viewAny
+        return $user->hasPermissionToViewAnyBooks();
+
     }
 
     /**

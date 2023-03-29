@@ -74,15 +74,20 @@ class User extends Authenticatable implements JWTSubject
 
     public function isAdmin()
     {
-        return $this->role = self::ROLE_ADMIN;
+        return $this->role === self::ROLE_ADMIN;
     }
 
     public function isNormalUser()
     {
-        return $this->role = self::ROLE_NORMAL;
+        return $this->role === self::ROLE_NORMAL;
     }
 
     public function hasPermissionToCreateBook()
+    {
+        return $this->isAdmin() || $this->isNormalUser();
+    }
+
+    public function hasPermissionToViewAnyBooks()
     {
         return $this->isAdmin() || $this->isNormalUser();
     }

@@ -25,4 +25,18 @@ class BookController extends Controller
         // table users 和 books 在 model 中，設定著一對多的關聯
         return $user->books()->create($validated);
     }
+
+    public function index(Request $request){
+
+        // 通過 Policy 來授權動作
+        // The current user can viewAny the book
+        // Controller Method index() 對應 Policy Method viewAny
+        $this->authorize('viewAny', [Book::class]);
+        $books = Book::latest();
+        if ($request->boolean('owned')) {
+            $books->where('user_id', Auth::user()->getKey());
+        }
+        return $books->paginate();
+
+    }
 }
