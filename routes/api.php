@@ -27,7 +27,7 @@ Route::prefix('user')->group(function () {
     Route::middleware('auth')->group(function () {
         Route::get('logout', [AuthController::class, 'logout']);
         Route::apiResource('books', BookController::class)
-        ->only('store', 'index');
+        ->only('store', 'index', 'update');
     
     });
 });

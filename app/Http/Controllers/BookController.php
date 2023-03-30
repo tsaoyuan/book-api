@@ -39,4 +39,19 @@ class BookController extends Controller
         return $books->paginate();
 
     }
+
+    public function update(Request $request, Book $book){
+        // App\Models\Book => App\Policies\BookPolicy
+        // dd(Book::class);
+
+        // 從外部注入的 Book Model instance
+        // dd($book);
+
+        // Controller 的 authorize() 用 BookPolicy 的 update() 判斷 user 是否(true or false)可以更新
+        // true: 進行下一步
+        // false: 403 
+        $this->authorize('update', [Book::class, $book]);
+        
+        
+    }
 }

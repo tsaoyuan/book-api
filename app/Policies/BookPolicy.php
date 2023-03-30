@@ -55,9 +55,10 @@ class BookPolicy
      */
     public function update(User $user, Book $book)
     {
-        //
+        // 更改 book 內容，書本持有者 或 Admin
+        return $user->getKey() === $book->user_id || $user->isAdmin();
     }
-
+    
     /**
      * Determine whether the user can delete the model.
      *
