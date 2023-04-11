@@ -68,7 +68,8 @@ class BookPolicy
      */
     public function delete(User $user, Book $book)
     {
-        //
+        // 刪除 book 內容，必須是書本持有者 或 Admin
+        return $user->getKey() === $book->user_id || $user->isAdmin();
     }
 
     /**

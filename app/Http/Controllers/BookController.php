@@ -53,4 +53,13 @@ class BookController extends Controller
         return $book;
         
     }
+
+    public function destroy(Request $request, Book $book){
+    
+        $this->authorize('delete', [Book::class, $book]);
+        // dd($book->delete());
+        $book->delete();
+        return response()->noContent();
+
+    }
 }
