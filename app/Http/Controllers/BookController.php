@@ -45,7 +45,7 @@ class BookController extends Controller
     public function show(Book $book){
         $this->authorize('view', [Book::class, $book]);
         // dd($book);
-        return $book;
+        return BookResource::make($book);
 
     }
 
