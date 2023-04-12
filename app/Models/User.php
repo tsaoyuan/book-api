@@ -91,4 +91,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->isAdmin() || $this->isNormalUser();
     }
+    
+    public function hasPermissionToViewBooks()
+    {
+        return $this->isAdmin() || $this->isNormalUser();
+    }
 }

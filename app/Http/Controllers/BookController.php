@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,6 +40,17 @@ class BookController extends Controller
         return $books->paginate();
     }
 
+    // 根據情境設計 定義一個 外部依賴注入 參數：$book
+    // router model binding $book
+    public function show(Book $book){
+        $this->authorize('view', [Book::class, $book]);
+        // dd($book);
+        return $book;
+
+    }
+
+
+
 
     public function update(Request $request, Book $book){
 
@@ -54,7 +66,9 @@ class BookController extends Controller
         
     }
 
-    public function destroy(Request $request, Book $book){
+    // public function destroy(Request $request, Book $book){
+    // 根據情境設計 定義一個 外部依賴注入 參數：$book
+    public function destroy(Book $book){
     
         $this->authorize('delete', [Book::class, $book]);
         // dd($book->delete());

@@ -30,7 +30,7 @@ Route::prefix('user')->group(function () {
         });
         Route::get('logout', [AuthController::class, 'logout']);
         Route::apiResource('books', BookController::class)
-        ->only('store', 'index', 'update', 'destroy');
+        ->only('store', 'index', 'show', 'update', 'destroy');
     
     });
 });
