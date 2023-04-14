@@ -2,10 +2,9 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Resources\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BookResource extends JsonResource
+class UserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +15,10 @@ class BookResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'      => $this->getKey(),
-            'creator-make' => UserResource::make($this->whenLoaded('user')),
-            'creator-belonsto' => $this->user->name,
-            'name'    => $this->name,
-            'author'  => $this->author,
-        ];
+            'id' => $this->id,
+            'role'=> $this->role,
+            'name'=> $this->name,
+            'email'=> $this->email,
+        ]; 
     }
 }

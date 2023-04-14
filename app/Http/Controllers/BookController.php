@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
+use App\Http\Resources\BookResource;
 use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
@@ -45,7 +45,10 @@ class BookController extends Controller
     public function show(Book $book){
         $this->authorize('view', [Book::class, $book]);
         // dd($book);
-        return BookResource::make($book);
+        // return BookResource::make($book);
+
+        // BookResource.php 內的 UserResource::make($this->whenLoaded('user'))，要搭配 load() 才能顯示關聯的 user 資料載入到 BookResource
+        return BookResource::make($book->load('user'));
 
     }
 
