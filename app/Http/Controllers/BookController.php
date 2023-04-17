@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BookCollection;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use App\Http\Resources\BookResource;
@@ -38,11 +39,12 @@ class BookController extends Controller
         // The current user can viewAny the book
         // Controller Method index() 對應 Policy Method viewAny
         $this->authorize('viewAny', [Book::class]);
-        $books = Book::latest();
+        $books = Book::latest()->with('user');
         if ($request->boolean('owned')) {
             $books->where('user_id', Auth::user()->getKey());
         }
-        return $books->paginate();
+        // return $books->paginate();
+        return BookCollection::make($books->paginate());
     }
 
     // 根據情境設計 定義一個 外部依賴注入 參數：$book
@@ -51,10 +53,11 @@ class BookController extends Controller
         $this->authorize('view', [Book::class, $book]);
         // dd($book);
         return BookResource::make($book);
-
+        
         // BookResource.php 內的 UserResource::make($this->whenLoaded('user'))，要搭配 load() 才能顯示關聯的 user 資料載入到 BookResource
         // return BookResource::make($book->load('user'));
-
+        // with() 代替 load() 的表示方法:
+        // return BookResource::make($book->with('user')->first());
     }
 
 
