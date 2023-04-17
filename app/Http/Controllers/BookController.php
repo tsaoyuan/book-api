@@ -39,12 +39,16 @@ class BookController extends Controller
         // The current user can viewAny the book
         // Controller Method index() 對應 Policy Method viewAny
         $this->authorize('viewAny', [Book::class]);
-        $books = Book::latest()->with('user');
+        
+        $books = Book::latest();
+
         if ($request->boolean('owned')) {
             $books->where('user_id', Auth::user()->getKey());
         }
-        // return $books->paginate();
-        return BookCollection::make($books->paginate());
+
+        // $books = Book::latest(); 情況下，下列兩種方式得到的結果一樣
+        // return BookCollection::make($books->with('user')->paginate());
+        return BookCollection::make($books->paginate()->load('user'));
     }
 
     // 根據情境設計 定義一個 外部依賴注入 參數：$book
