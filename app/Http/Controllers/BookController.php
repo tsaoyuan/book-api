@@ -24,7 +24,12 @@ class BookController extends Controller
         ]);
         // dd($validated);
         // table users 和 books 在 model 中，設定著一對多的關聯
-        return $user->books()->create($validated);
+        // return $user->books()->create($validated);
+
+        // use BookResource
+        return BookResource::make($user->books()->create($validated));
+
+
     }
 
     public function index(Request $request){
@@ -45,10 +50,10 @@ class BookController extends Controller
     public function show(Book $book){
         $this->authorize('view', [Book::class, $book]);
         // dd($book);
-        // return BookResource::make($book);
+        return BookResource::make($book);
 
         // BookResource.php 內的 UserResource::make($this->whenLoaded('user'))，要搭配 load() 才能顯示關聯的 user 資料載入到 BookResource
-        return BookResource::make($book->load('user'));
+        // return BookResource::make($book->load('user'));
 
     }
 
