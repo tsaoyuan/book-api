@@ -41,13 +41,14 @@ Route::post('photo', function (Request $request) {
 
     // postman 上傳的檔案中，找尋postman body>form-data key 為 image 的內容
     $image = $request->file('image');
+    $extensionName = $image[0]->getClientOriginalExtension();
     
     // 圖片的檔名(一串 16 位元的隨機亂碼)
-    $path = Str::random().".jpeg";
+    $path = Str::random().".$extensionName";
     // 圖片的內容 (二元碼)
     $content = $image[0]->getContent();
 
-    // Laravel 內建建檔方法
+    // Laravel 內建建檔方法, 實際將檔案存進 storage
     Storage::put($path, $content);
     return 'upload file';
 });
