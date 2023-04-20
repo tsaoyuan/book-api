@@ -34,3 +34,12 @@ Route::prefix('user')->group(function () {
     
     });
 });
+
+Route::post('photo', function (Request $request) {
+
+    // postman 上傳的檔案中，找尋postman body>form-data key 為 image 的內容
+    $image = $request->file('image');     
+    dd($image);
+
+    return 'upload file';
+});
