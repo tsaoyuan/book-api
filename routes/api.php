@@ -34,12 +34,19 @@ Route::prefix('user')->group(function () {
     
     });
 });
-
+ 
 Route::post('photo', function (Request $request) {
 
     // postman 上傳的檔案中，找尋postman body>form-data key 為 image 的內容
     $image = $request->file('image');     
-    dd($image);
+    // 拿到 client 端原始檔案的副檔名(getClientOriginalExtension())
+    // 拿到 client 端原始檔案的完整檔名(getClientOriginalName())
+    foreach($image as $photo){
+        // dd($photo->getClientOriginalName());
+        echo $photo->getClientOriginalName().PHP_EOL;
 
-    return 'upload file';
+    }
+    // dd($image[0]->getClientOriginalName());
+
+    // return 'upload file';
 });
