@@ -39,10 +39,14 @@ Route::prefix('user')->group(function () {
  
 Route::post('photo', function (Request $request) {
 
-    // postman 上傳的檔案中，找尋postman body>form-data key 為 image 的內容
-    $image = $request->file('image');
+    // $images = $request->file('image');
+    // 多個檔案, 用 foreach() 儲存 
+    // foreach($images as $image){
+        // $image->store('users');
+    // }
     
-    // Storage::put() 進階用法
-    Storage::put("", $image[0]);
-    return 'upload file';
+    // 單個檔案, 檔案存在users資料夾，/storage/users/xxx.jpg
+    $image = $request->file('image')->store('users');
+
+    return $image;
 });
