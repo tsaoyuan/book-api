@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\AuthController;
@@ -39,14 +40,29 @@ Route::prefix('user')->group(function () {
  
 Route::post('photo', function (Request $request) {
 
-    // $images = $request->file('image');
-    // 多個檔案, 用 foreach() 儲存 
-    // foreach($images as $image){
-        // $image->store('users');
-    // }
-    
-    // 單個檔案, 檔案存在users資料夾，/storage/users/xxx.jpg
-    $image = $request->file('image')->store('users');
+    // $request->validate([
+    //     'image.[]' => ['image'],
+    // ]);
 
-    return $image;
+    $request->validate([
+        // 驗證 postman 的 key 為 image[] 時， 是不是 array 格式
+        'image' => ['array'],
+        // 驗證 postman 的 key 在 image[] 時，value (array element)是不是 image 格式 (驗證 array 的 element 是不是 image 格式
+        'image.*' => ['image'],
+    ]);
+    
+    
+    
+    // image 為 value 的儲存方式 
+    // $image = $request->file('image')->store('users');
+
+    // image 為 array 的儲存方式
+    $images = $request->file('image');
+    $msg = [];
+    foreach($images as $image){
+       $path = $image->store('users');
+       // 每次儲存的檔名存入 $msg[] 
+       $msg[] = $path;
+    };
+    return $msg;
 });
