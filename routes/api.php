@@ -44,20 +44,33 @@ Route::post('photo', function (Request $request) {
     //     'image.[]' => ['image'],
     // ]);
 
-    $request->validate([
+    // $request->validate([
         // 驗證 postman 的 key 為 image[] 時， 是不是 array 格式
-        'image' => ['array'],
+        // 'image' => ['array'],
         // 驗證 postman 的 key 在 image[] 時，value (array element)是不是 image 格式 (驗證 array 的 element 是不是 image 格式
-        'image.*' => ['image'],
-    ]);
-    
-    
+        // 'image.*' => ['image'],
+    // ]);
+
     
     // image 為 value 的儲存方式 
     // $image = $request->file('image')->store('users');
-
+    
     // image 為 array 的儲存方式
-    $images = $request->file('image');
+    // $images = $request->file('image');
+    // $msg = [];
+    // foreach($images as $image){
+    //     $path = $image->store('users');
+    //     // 每次儲存的檔名存入 $msg[] 
+    //     $msg[] = $path;
+    // };
+    // return $msg;
+
+    // 一對一 User and Image
+    $user = \App\Models\User::find(1);
+    $user->image()->create([
+        'url' => $request->file('image')->store('users'),
+    ]); 
+    return $user->image;
     $msg = [];
     foreach($images as $image){
        $path = $image->store('users');

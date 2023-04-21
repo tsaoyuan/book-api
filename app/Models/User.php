@@ -72,6 +72,12 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Book::class);
     }
 
+    public function image()
+    {
+        // 一個 user 一張大頭照
+        return $this->morphOne(Image::class, 'imageable');
+    }
+
     public function isAdmin()
     {
         return $this->role === self::ROLE_ADMIN;
