@@ -56,6 +56,33 @@ return [
             'throw' => false,
         ],
 
+	'gcs' => [
+		'driver' => 'gcs',
+
+		//GOOGLE_CLOUD_PROJECT_ID=你專案的id
+		//機密資訊放在.env裡面讀取
+		'project_id' => env('GOOGLE_CLOUD_PROJECT_ID', ''),
+
+		//申請GCP API憑證的時候會有一組json檔案
+		//把他製作成service-account.json丟到專案裡面並透過base_path 讀取到路徑
+		'key_file_path' => env('GOOGLE_CLOUD_KEY_FILE', base_path('service-account.json')),
+
+		//你的Storage Bucket 的名稱,機密 設在.env
+		'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET', ''),
+
+		// 設定上傳 GCP CLOUD STORAGE 資料夾名稱
+        // 若參數1 空值，則會使用參數 2 的 ooo 作為檔案上傳 GCP 時的 prefix 
+		'path_prefix' => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', 'ooo'),
+
+		//還沒使用到,沒動到
+		'storage_api_uri' => env('GOOGLE_CLOUD_STORAGE_API_URI', null), // see: Public URLs below
+
+		//可以顯示錯誤訊息
+		'throw' => true,
+
+		//感覺有歷史原因所以才需要加上這段
+		'visibility_handler' => \League\Flysystem\GoogleCloudStorage\UniformBucketLevelAccessVisibility::class,
+        ],
     ],
 
     /*
