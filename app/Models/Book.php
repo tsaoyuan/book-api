@@ -17,4 +17,10 @@ class Book extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public function images()
+    {
+        // 一本書有很多照片
+        return $this->morphMany(Image::class, 'imageable');
+    }
 }

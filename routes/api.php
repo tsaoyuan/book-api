@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Image;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -66,16 +67,24 @@ Route::post('photo', function (Request $request) {
     // return $msg;
 
     // 一對一 User and Image
-    $user = \App\Models\User::find(1);
-    $user->image()->create([
-        'url' => $request->file('image')->store('users'),
-    ]); 
-    return $user->image;
-    $msg = [];
-    foreach($images as $image){
-       $path = $image->store('users');
-       // 每次儲存的檔名存入 $msg[] 
-       $msg[] = $path;
+    // $user = \App\Models\User::find(1);
+    // $user->image()->create([
+    //     'url' => $request->file('image')->store('users'),
+    // ]); 
+    // return $user->image;
+
+    // 一對多 Book and Image
+    $pics = $request->file('image');
+
+    $book = \App\Models\Book::find(1);
+    foreach($pics as $image){
+        $book->images()->create([
+            'url' => $image->store('books'),
+        ]);
     };
-    return $msg;
+    // Model Book 有 一對多 morphMany 的`images()` 方法
+    // 透過 morphMany, Eloquent 自動生成一動態關聯屬性 `images`
+    // return $book->images->take(-2);
+    // ORM 的方式取得最新兩筆 image 資訊
+    return $book->images()->latest()->take(2)->get();
 });
